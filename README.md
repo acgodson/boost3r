@@ -2,42 +2,45 @@
 
 # Boost3r: The ultimate social marketing experience
 
-- 👉 [Watch Demo]()
-- 👉 [Contract Addresses]()
+- 👉 [Watch Demo](https://youtu.be/2Rhz4Bdc8I8)
+- 👉 [Contract Addresses](https://boost3r.web.app/addresses)
 
 The `Smart Contracts` and `dAPP` was created as a proof-of-idea for the Mantle DEFI Hackathon 3 .
 
-
-
-Boost3r empowers businesses to easily create and manage campaigns for their web3 products & events. And for influencers, Boost3r provides the engage with these campaigns, earning redeemable rewards in `Booster Tokens` and POAP NFT badges.
+Boost3r empowers businesses to easily create and manage campaigns for their web3 products & events. And for influencers, Boost3r provides the engage with these campaigns, earning redeemable rewards in `Booster Tokens` and `POAP NFT` badges.
 
 ## Boost3r Web
 
 <!-- ![preview](./chaincraft-CLI/screenshots/test.gif) -->
 <img src="https://github.com/acgodson/boost3r/blob/main/Boost3r-web/public/photos/welcome.png" width="600" height="auto">
 
-[See more for Web]()
+[See for more on web](https://github.com/acgodson/boost3r/tree/main/Boost3r-web)
 
-## Boost3r Smart Contract (ERC20 & ERC721 Compatibility)
+## Boost3r Contracts (ERC20, ERC721, & mantle cross-bridge Compatibility)
 
-[See contracts in details]()
+The demo solidity contract is designed to facilitate campaigns where participants can check in with or withour a referral link to receive a reward in the form of a Proof of Attendance Protocol NFT (PoapNFT) and the Booster's native ERC20 token called (BST).
 
-## Mantle Crosschain brigde compatibilty
+The contract allows for the creation of multiple campaigns with unique IDs, deposit amounts, and reward amounts by spending BST using WETH9 tokens as collateral. Additionally, The BST token imports L2StandardERC20 from Mantle to support Layer 2 scaling solutions.
 
-[Read more]()
+[See for more](https://github.com/acgodson/boost3r/tree/main/Boost3r-Contracts)
+
+<img src="https://github.com/acgodson/boost3r/blob/main/Boost3r-web/public/photos/create.png" width="600" height="auto">
+
+<img src="https://github.com/acgodson/boost3r/blob/main/Boost3r-web/public/photos/withdraw.png" width="600" height="auto">
 
 ### Links
 
-- [Youtube]()
-- [Website]()
+- [Youtube](https://youtu.be/2Rhz4Bdc8I8)
+- [Website](https://boost3r.web.app)
+- [ERC20](https://explorer.testnet.mantle.xyz/token/0x6280b9b5Aac7851eF857884b50b86129809aF7Ab/token-transfers)
+- [Campaign Contract](https://explorer.testnet.mantle.xyz/address/0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22F)
+- [NFT](https://explorer.testnet.mantle.xyz/token/0x8FaeCCc73e720EDaF5DA087Eb075484f0e1101a6/token-transfers)
 
 ### References
 
-- [Mantle]()
-- [Pinata -IPFS Pinning Service]()
-- [Firebase JWT]()
-
-## Limitations
+- [Mantle](https://docs.mantle.xyz/introducing-mantle/quick-start/building-a-dapp)
+- [Pinata -IPFS Pinning Service](https://app.pinata.cloud)
+- [Infura](https://docs.infura.io)
 
 ### Contributors
 
