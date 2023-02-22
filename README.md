@@ -1,6 +1,6 @@
 <img src="https://github.com/acgodson/boost3r/blob/main/Boost3r-web/public/photos/cover.png" width="auto" height="300">
 
-# Boost3r: The ultimate marketing experience
+# Boost3r: The ultimate social marketing experience
 
 - 👉 [Watch Demo]()
 - 👉 [Contract Addresses]()
