@@ -10,29 +10,27 @@ This is a Solidity Smart Contract for the Boost3r Affliate Marketing Platform. I
 
 ## Boost3rTOKEN Contract
 
-This contract is a standard ERC20 token contract with the additional functionality of depositing and withdrawing tokens using the BIT token as a collateral.
+- This contract is a standard ERC20 token contract with the additional functionality of depositing and withdrawing tokens using the WETH9 token as a collateral.
 
-- The contract imports the ERC20 and IERC20 interfaces from OpenZeppelin, and the L2StandardERC20 interface from Mantle, which is used to represent the BitToken, the collateral token in this contract.
+- The contract imports the ERC20 interface from OpenZeppelin, WETH9 from mantle, and has a fixed exchange rate of 1 to WETH
 
-- The receive and fallback functions are both used to reject any direct ether deposits to the contract.
+- The deposit function allows users to deposit the WETH as collateral and mint L2BST tokens. The function first checks that the amount to deposit is greater than 0 and then uses the transferFrom function from the WETH9 Contract to transfer the specified amount from the user's address to the contract's address.
 
-- The deposit function allows users to deposit the Bit as collateral and mint L2BST tokens. The function first checks that the amount to deposit is greater than 0 and then uses the transferFrom function from the BIT Contract to transfer the specified amount from the user's address to the contract's address.
-
-- The number of L2BST tokens to mint using the exchangeRate variable and adds those tokens to the user's balance.
-
-- The withdraw function allows users to withdraw BIT by burning the corresponding number of L2BST tokens. The function first checks that the user has enough L2BST tokens to withdraw and then calculates the amount of BitToken to return using the exchangeRate.
+- The withdraw function allows users to withdraw WETH by burning the corresponding number of L2BST tokens. The function first checks that the user has enough BDT tokens to withdraw
 
 ## Campaign Contract
 
-- Allows organizers to create campaigns by depositing a specified number of Boost3rTokens.
+- Allows organizers to create campaigns by depositing a specified number of BST.
 
 - Users who participate in the campaign check in to recieve a PoapNFT
 
-- If particpants they refer another attendee who checks in successfully, they receive a reward in Boost3rtokens.
+- If particpants they refer another attendee who checks in successfully, they receive a reward in BST on behalf of the creator of the campaign.
+
+## Contract Addres
 
 ## Usage
 
-The contract can be tested and deployed in a hardhat development environment
+This contract was compiles and deployed in a hardhat development environment
 
 ```bash
 # Compile Contracts
@@ -43,15 +41,10 @@ npx hardhat test
 
 ```
 
-## Author
-
-Godson Ani
-
 ## License
 
 [MIT]()
 
-## Useful Addresses
+## Author
 
-- L2 Brost3rToken Address: 0x6287487E7DfDBa2ba1A6190Cc9e3Fe24551f3CBb
-- L2 POAP NFT: 0xaC73d85d10f8984B46E532C7a8707EC8B3486e1f
+Godson Ani
