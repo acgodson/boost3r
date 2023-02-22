@@ -1,0 +1,37 @@
+{
+  "extends": "@tsconfig/node16-strictest-esm/tsconfig.json",
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "declaration": true,
+    "sourceMap": true,
+    "stripInternal": true,
+    "allowJs": true,
+    "noEmit": true,
+    "module": "esnext",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "incremental": true,
+    "noImplicitReturns": false,
+    "noPropertyAccessFromIndexSignature": false,
+    "exactOptionalPropertyTypes": false
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.jsx",
+    "pages/404.tsx",
+    "next.config.mjs"
+  ],
+  "paths": {
+    "@/components/*": ["src/components/*"],
+    "@/types/*": ["src/types/*"],
+    "@/utils/*": ["src/utils/*"],
+    "@/theme": ["src/theme"]
+  },
+  "incremental": true,
+  "exclude": ["node_modules"]
+}
