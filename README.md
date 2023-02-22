@@ -5,9 +5,9 @@
 - 👉 [Watch Demo](https://youtu.be/2Rhz4Bdc8I8)
 - 👉 [Contract Addresses](https://boost3r.web.app/addresses)
 
-The `Smart Contracts` and `dAPP` was created as a proof-of-idea for the Mantle DEFI Hackathon 3 .
+The `Smart Contracts` and `dAPP` was created as a proof-of-idea during the Mantle DEFI Hackathon 3 .
 
-Boost3r empowers businesses to easily create and manage campaigns for their web3 products & events. And for influencers, Boost3r provides the engage with these campaigns, earning redeemable rewards in `Booster Tokens` and `POAP NFT` badges.
+Boost3r empowers businesses to easily create and manage campaigns for their web3 products & events, and provides a platfor for influencers to engage with these campaigns, earning redeemable rewards in `Booster Tokens` and `POAP NFT` badges.
 
 ## Boost3r Web
 
