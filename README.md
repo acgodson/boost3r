@@ -22,6 +22,14 @@ The demo solidity contract is designed to facilitate campaigns where participant
 
 The contract allows for the creation of multiple campaigns with unique IDs, deposit amounts, and reward amounts by spending BST using WETH9 tokens as collateral. Additionally, The BST token imports L2StandardERC20 from Mantle to support Layer 2 scaling solutions.
 
+| Contract | Standard | Address                                     |
+| -------- | -------- | ------------------------------------------- |
+| BST      | ERC20    | 0x6280b9b5Aac7851eF857884b50b86129809aF7Ab  |
+| BPOAP    | ERC721   | 0x8FaeCCc73e720EDaF5DA087Eb075484f0e1101a6  |
+| Campaign | -        | 0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22F |
+
+[See Updated Addresses]()
+
 [See for more](https://github.com/acgodson/boost3r/tree/main/Boost3r-Contracts)
 
 <img src="https://github.com/acgodson/boost3r/blob/main/Boost3r-web/public/photos/create.png" width="600" height="auto">

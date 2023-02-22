@@ -1,5 +1,13 @@
 This is a Solidity Smart Contract for the Boost3r Affliate Marketing Platform. It consists of three contracts: `PoapNFT`, `Boost3rToken`, and `Campaign`.
 
+| Contract | Standard | Address                                     |
+| -------- | -------- | ------------------------------------------- |
+| BST      | ERC20    | 0x6280b9b5Aac7851eF857884b50b86129809aF7Ab  |
+| BPOAP    | ERC721   | 0x8FaeCCc73e720EDaF5DA087Eb075484f0e1101a6  |
+| Campaign | -        | 0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22F |
+
+[See Updated Addresses](https://boost3r.web.app)
+
 ## PoapNFT Contract
 
 - Inherits from the `ERC721` contract in the [OpenZeppelin library](), which implements the ERC-721 standard for non-fungible tokens (NFTs).
