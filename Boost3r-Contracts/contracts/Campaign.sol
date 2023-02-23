@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import "./L2BSTToken.sol";
 import "./PoapNFT.sol";
+import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Campaign {
     struct CampaignInfo {
@@ -36,7 +37,7 @@ contract Campaign {
             payable(address(0x6280b9b5Aac7851eF857884b50b86129809aF7Ab))
         );
         owner = msg.sender;
-        poapNft = PoapNFT(address(0x8FaeCCc73e720EDaF5DA087Eb075484f0e1101a6));
+        poapNft = PoapNFT(address(0x2C668a20C78BB3E484E903450ABFea8aF917F760));
     }
 
     function createCampaign(
@@ -93,12 +94,15 @@ contract Campaign {
 
         if (_referralPoapTokenId == 0) {
             // If the user doesn't have a referrer, mint a new PoapNFT and transfer to the user
-            uint256 tokenId = poapNft.totalSupply() + 1;
-            poapNft.mint(checkInAddress, tokenId, campaigns[_campaignId].cid);
-            campaigns[_campaignId].poapTokenIds.push(tokenId);
-
-
-            poapNftOwners[tokenId] = checkInAddress;
+            uint256 lastMintedEventId = poapNft.getLastMintedEventId();
+            uint256 newEventId = SafeMath.add(lastMintedEventId, 1);
+            poapNft.mint(
+                checkInAddress,
+                newEventId,
+                campaigns[_campaignId].cid
+            );
+            campaigns[_campaignId].poapTokenIds.push(newEventId);
+            poapNftOwners[newEventId] = checkInAddress;
         } else {
             // If the user has a referrer, confirm that the poapTokenId exists in the array of poapTokenIds
             require(
@@ -107,10 +111,15 @@ contract Campaign {
             );
 
             // Mint a new PoapNFT and transfer to the user
-            uint256 tokenId = poapNft.totalSupply() + 1;
-            poapNft.mint(checkInAddress, tokenId, campaigns[_campaignId].cid);
-            campaigns[_campaignId].poapTokenIds.push(tokenId);
-            poapNftOwners[tokenId] = checkInAddress;
+            uint256 lastMintedEventId = poapNft.getLastMintedEventId();
+            uint256 newEventId = SafeMath.add(lastMintedEventId, 1);
+            poapNft.mint(
+                checkInAddress,
+                newEventId,
+                campaigns[_campaignId].cid
+            );
+            campaigns[_campaignId].poapTokenIds.push(newEventId);
+            poapNftOwners[newEventId] = checkInAddress;
 
             // Get the owner of the referrer PoapNFT and reward them with Brows3rToken
             address referrer = poapNftOwners[_referralPoapTokenId];

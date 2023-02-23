@@ -23,16 +23,16 @@ const colors = {
     900: "#1e0d2d",
   },
 };
-
+const baze = base as any;
 const fonts = {
-  heading: `Josefin Sans, ${base.fonts.heading}`,
+  heading: `Josefin Sans, ${baze.fonts.heading}`,
 };
 
 const components = {
   Button: {
     variants: {
       pill: (props: any) => ({
-        ...base.components.Button.variants.outline(props),
+        ...baze.components.Button.variants.outline(props),
         rounded: "full",
         color: "gray.500",
       }),

@@ -1,4 +1,4 @@
-import { HStack, Button, Box, Text } from '@chakra-ui/react';
+import { HStack, Button, Box } from '@chakra-ui/react';
 import { GlobalContext } from 'contexts/global';
 import { useContext } from 'react';
 import { FaGlobe } from 'react-icons/fa';
@@ -9,8 +9,6 @@ const Header = () => {
 
   return (
     <>
-
-
 
 
       <HStack

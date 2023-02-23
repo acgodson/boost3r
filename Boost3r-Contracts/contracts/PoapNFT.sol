@@ -3,13 +3,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract PoapNFT is ERC721Enumerable {
-    using SafeMath for uint256;
-    using Counters for Counters.Counter;
-
     struct Event {
         uint256 eventId;
         string cid;
@@ -17,7 +12,6 @@ contract PoapNFT is ERC721Enumerable {
     }
 
     mapping(uint256 => Event) events;
-    mapping(address => Counters.Counter) private _tokenIds;
     uint256 public freeTokens;
     uint256 public totalMinted;
     uint256 public lastMintedTokenId;
@@ -36,12 +30,10 @@ contract PoapNFT is ERC721Enumerable {
         string memory _cid
     ) public {
         require(!_exists(_eventId), "Event already exists");
-        _tokenIds[_to].increment();
-        uint256 newItemId = _tokenIds[_to].current();
-        _safeMint(_to, newItemId);
-        events[newItemId] = Event(_eventId, _cid, 0);
+        _safeMint(_to, _eventId);
+        events[_eventId] = Event(_eventId, _cid, 0);
         totalMinted++;
-        lastMintedTokenId = newItemId;
+        lastMintedTokenId = _eventId;
     }
 
     function addReferral(uint256 _eventId, uint256 _referrals) public {
@@ -63,7 +55,7 @@ contract PoapNFT is ERC721Enumerable {
         return totalMinted;
     }
 
-    function getLastMintedTokenId() public view returns (uint256) {
+    function getLastMintedEventId() public view returns (uint256) {
         return lastMintedTokenId;
     }
 
@@ -80,11 +72,11 @@ contract PoapNFT is ERC721Enumerable {
             TokenDetails[] memory result = new TokenDetails[](tokenCount);
             for (uint256 i = 0; i < tokenCount; i++) {
                 (
-                    uint256 tokenId,
+                    uint256 eventId,
                     string memory cid,
                     uint256 totalReferrals
                 ) = tokenDetailsByIndex(owner, i);
-                result[i] = TokenDetails(tokenId, cid, totalReferrals);
+                result[i] = TokenDetails(eventId, cid, totalReferrals);
             }
             return result;
         }
@@ -94,21 +86,21 @@ contract PoapNFT is ERC721Enumerable {
         public
         view
         returns (
-            uint256 tokenId,
+            uint256 eventId,
             string memory cid,
             uint256 totalReferrals
         )
     {
         require(index < balanceOf(owner), "Owner index out of bounds");
 
-        tokenId = tokenOfOwnerByIndex(owner, index);
-        Event storage eventDetails = events[tokenId];
+        eventId = tokenOfOwnerByIndex(owner, index);
+        Event storage eventDetails = events[eventId];
         cid = eventDetails.cid;
         totalReferrals = eventDetails.totalReferrals;
     }
 
     struct TokenDetails {
-        uint256 tokenId;
+        uint256 eventId;
         string cid;
         uint256 totalReferrals;
     }

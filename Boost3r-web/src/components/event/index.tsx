@@ -1,4 +1,4 @@
-import { Key, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
     Box,
     Button,
@@ -26,6 +26,7 @@ import { GlobalContext } from "contexts/global";
 import { FaChartLine, FaPeopleArrows, FaStar, FaTwitter } from "react-icons/fa";
 import Lottie from "lottie-react";
 import confetti from "src/utils/congrats.json"
+import { CAMPAIGN_ADDRESS } from "config";
 
 
 
@@ -52,13 +53,13 @@ const EventCard = (props: { id: any, refId: number }) => {
     const handleCheckIn = async () => {
         //  ethers.getAddress(account)
         setSubmitting(true)
-        const referrer = event.checkedInAddresses[parseInt(props.id)];
+        //  const referrer = event.checkedInAddresses[parseInt(props.id)];
         try {
             const ethereum = (window as any).ethereum;
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
 
-            const CampaignContract: any = new ethers.Contract("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", CAMPAIGN.abi, await signer);
+            const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
             const pushTx = await CampaignContract.checkIn(parseInt(props.id), ethers.ZeroAddress);
             const txxHash = pushTx.hash;
             console.log('Create campaign Transaction sent:', txxHash);
@@ -79,7 +80,7 @@ const EventCard = (props: { id: any, refId: number }) => {
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
             console.log(signer)
-            const CampaignContract: any = new ethers.Contract("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", CAMPAIGN.abi, await signer);
+            const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
 
             //Allow contract to transfer BST onbehalf of user from address to itself
             const campaignIds = await CampaignContract.getAllCampaigns();

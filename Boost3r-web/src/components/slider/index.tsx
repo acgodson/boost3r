@@ -1,4 +1,4 @@
-import { Key, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
     Box,
     Button,
@@ -23,16 +23,21 @@ import {
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import CAMPAIGN from "src/utils/Campaign.json"
-import POAP from "src/utils/PoapNFT.json"
 import { ethers } from "ethers";
 
 import { GlobalContext } from "contexts/global";
 import { FaChartLine, FaPeopleArrows, FaStar, FaTwitter } from "react-icons/fa";
 import Lottie from "lottie-react";
 import confetti from "src/utils/congrats.json"
+import { CAMPAIGN_ADDRESS } from "config";
 
 
 
+// declare global {
+//     interface Window {
+//         ethereum: any;
+//     }
+// }
 
 
 
@@ -76,8 +81,8 @@ const Slider = () => {
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
             console.log(signer)
-            const CampaignContract: any = new ethers.Contract("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", CAMPAIGN.abi, await signer);
-            const pushTx = await CampaignContract.checkIn(index, ethers.ZeroAddress);
+            const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
+            const pushTx = await CampaignContract.checkIn(index, 0);
             const txxHash = pushTx.hash;
             console.log('Create campaign Transaction sent:', txxHash);
             setSuccess(true)
@@ -88,6 +93,9 @@ const Slider = () => {
             console.log(e)
         }
     };
+
+
+
     // useEffect(() => {
 
     //     if (camps) {
@@ -131,7 +139,7 @@ const Slider = () => {
             const ethereum = (window as any).ethereum;
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
-            const CampaignContract: any = new ethers.Contract("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", CAMPAIGN.abi, await signer);
+            const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
 
             //Allow contract to transfer BST onbehalf of user from address to itself
 
@@ -173,16 +181,10 @@ const Slider = () => {
             setCamps(campaignData);
 
         }
-
-        if (!camps) {
+        if (!camps && account) {
             fetchCampaigns();
         }
-
-
-
-
-
-    }, [camps])
+    })
 
 
     const handleNextClick = () => {
@@ -595,7 +597,7 @@ const Slider = () => {
                                     borderRadius='15px'
                                 />
 
-                                {camps && camps.length > 1 && (
+                                {camps && camps.length > 0 && (
                                     <Box minH='100vh' py={6}>
 
                                         {

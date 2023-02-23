@@ -1,12 +1,13 @@
-import { Box, Button, Center, Flex, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Select, Spinner, Stack, Text, Textarea, Tooltip, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, IconButton, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, Stack, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import { CopyIcon } from "@chakra-ui/icons";
 import { GlobalContext } from "contexts/global";
 import { useContext, useEffect, useState } from "react";
 import { ethers } from "ethers";
-import BSTARTIFACT from "src/utils/L2BSTToken.json"
-import WETHARTIFACT from "src/utils/WETH9.json"
+import BSTARTIFACT from "src/utils/L2BSTToken.json";
+import WETHARTIFACT from "src/utils/WETH9.json";
 import { BsCheckCircle } from "react-icons/bs";
 import WithdrawTokenModal from "../withdraw";
+import { BST_ADDRESS, WETH_ADDRESS } from "config";
 
 
 
@@ -14,7 +15,7 @@ import WithdrawTokenModal from "../withdraw";
 
 
 function WalletCard() {
-    const { chain, balance, account, provider, bst, setBst, bpoap, setBpoap }: any = useContext(GlobalContext);
+    const { chain, user, balance, account, bst, setBst, bpoap, setBpoap }: any = useContext(GlobalContext);
     const [success, setSuccess] = useState<boolean>(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [amount, setAmount] = useState<number>(0.001);
@@ -33,6 +34,11 @@ function WalletCard() {
         }
 
     }
+    useEffect(() => {
+        console.log(step);
+        console.log(hash)
+    }, [step, hash])
+
 
 
     async function depositBST() {
@@ -42,18 +48,19 @@ function WalletCard() {
             const ethereum = (window as any).ethereum;
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
-            const BSTContract: any = new ethers.Contract("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", BSTARTIFACT.abi, await signer);
-            const WETHContract: any = new ethers.Contract("0xdEAddEaDdeadDEadDEADDEAddEADDEAddead1111", WETHARTIFACT.abi, await signer);
+            const BSTContract: any = new ethers.Contract(BST_ADDRESS, BSTARTIFACT.abi, await signer);
+            const WETHContract: any = new ethers.Contract(WETH_ADDRESS, WETHARTIFACT.abi, await signer);
             const depositAmount = ethers.parseUnits(amount.toString(), 18)
             const bitAllowance = ethers.parseUnits("0.4", 18)
 
             console.log("deposit aamount", depositAmount);
             //Allow contract to transfer WETH from address to itself
-            const appTx = await WETHContract.approve("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", bitAllowance);
+            const appTx = await WETHContract.approve(BST_ADDRESS, bitAllowance);
+            appTx.wait();
             // Get the transaction hash
             const txHash = appTx.hash;
             console.log('Transaction sent:', txHash);
-            await BSTContract.approve("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", bitAllowance);
+            await BSTContract.approve(BST_ADDRESS, bitAllowance);
             const dppTx = await BSTContract.deposit(depositAmount, account);
             const tx2Hash = dppTx.hash;
             console.log('Transaction sent:', tx2Hash);
@@ -64,12 +71,13 @@ function WalletCard() {
             //Allow contrance to transfer BST from address to itself
             //await BSTContract.approve("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", allowanceAmount);
 
+
+            console.log()
         } catch (e) {
             console.log(e)
             setSubmitting(false)
         }
     }
-
 
     //fetch bst balance
     useEffect(() => {
@@ -77,7 +85,7 @@ function WalletCard() {
             const ethereum = (window as any).ethereum;
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
-            const BSTContract: any = new ethers.Contract("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", BSTARTIFACT.abi, await signer)
+            const BSTContract: any = new ethers.Contract(BST_ADDRESS, BSTARTIFACT.abi, await signer)
             const balance = await BSTContract.balanceOf(account);
             const decimals = 18; // Replace with the number of decimal places used by the token
             const balanceFormatted = ethers.formatUnits(balance, decimals);
@@ -85,7 +93,7 @@ function WalletCard() {
             setBst(balanceFormatted);
 
         }
-        if (account) {
+        if (user && account) {
             if (!bstBalance) {
                 checkBST()
 
@@ -244,17 +252,23 @@ function WalletCard() {
                 </Flex>
                 <Flex alignItems={"center"} justifyContent="space-around" mt={4}>
                     <Button colorScheme={account && chain === 5001n ? "green" : "gray"}
-                        disabled={account && chain === 5001n ? false : true}
-                        onClick={() => {
-                            setStep("1"); onOpen();
-                        }}
+                        disabled={
+                            account && chain === 5001n ?
+                                false : true}
+                        onClick={
+                            user && account && chain === 5001n ? () => {
+                                setStep("1"); onOpen();
+                            } : () => { }
+
+                        }
                     >
                         FUND
                     </Button>
                     <Button colorScheme={account && chain === 5001n ? "red" : "gray"} ml={5}
                         disabled={account && chain === 5001n ? false : true}
                         onClick={
-                            () => setWithdrawing(true)
+                            user && account && chain === 5001n ?
+                                () => setWithdrawing(true) : () => { }
                         }
                     >
                         Withdraw

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 // import { usePrivy } from '@privy-io/react-auth';
 import PageLayout from 'src/components/page-layout';
 import Sidebar from 'src/components/sidebar';
-import { Box, Button, Center, Flex, Grid, GridItem, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useBreakpointValue, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Grid, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useBreakpointValue, useToast, VStack } from '@chakra-ui/react';
 import Header from 'src/components/header';
 import Slider from 'src/components/slider';
 import { FiPlay } from 'react-icons/fi';
@@ -16,7 +16,6 @@ import CreateCampaignModal from 'src/components/create-campaign';
 
 
 
-const videoUrl = "https://youtu.be/2Rhz4Bdc8I8"; // demo video URL
 const auth = getAuth();
 const tProvider = new TwitterAuthProvider();
 
@@ -35,19 +34,18 @@ export default function DashboardPage() {
   const toast = useToast();
   const [connect, setConnect] = useState(false)
   const {
-    user,
+
     mapUserData,
     setUserCookie,
     setTwitterAuthCredential,
     setTwitterProvider,
     setConnected,
     setProvider,
-    account,
     setAccount,
     connected,
-    provider,
     twitterProvider,
     setChain,
+    user,
     setBalance }: any = useContext(GlobalContext);
   const userObject = !twitterProvider ? null : twitterProvider;
 
@@ -125,8 +123,7 @@ export default function DashboardPage() {
       </Center>
     ),
     2: (
-      <iframe width="100%" height="315" src={videoUrl} title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
-
+      <iframe width="100%" height="315" src="https://www.youtube.com/embed/2Rhz4Bdc8I8" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen></iframe>
     ),
   };
 
@@ -162,7 +159,7 @@ export default function DashboardPage() {
 
     }
 
-    if (connect) {
+    if (connect && user) {
       connectToMetamask()
       setConnect(false)
     }

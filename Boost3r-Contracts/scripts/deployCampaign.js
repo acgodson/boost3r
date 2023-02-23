@@ -34,4 +34,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-// Campaign contract deployed to 0x3a55e2fDB61012108B07754243066d912B4c5F50 on mantle testnet
+// Campaign contract deployed to 0x0F469c25ac4Eb28dFC43E6480F69957510De757A on mantle testnet

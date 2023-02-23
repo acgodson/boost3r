@@ -10,12 +10,19 @@ import {
     Avatar,
     IconButton,
     Flex,
-    Text
+    Text,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+    Center
 } from '@chakra-ui/react'
 import { FiBookOpen, FiHome, FiSettings } from 'react-icons/fi'
 import { FaTwitter } from "react-icons/fa";
 import { GlobalContext } from 'contexts/global';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 
 
@@ -49,7 +56,7 @@ const Navitems = [
 
 ]
 
-const SidebarContent = (prop: { username: string, avatar: string }) => (
+const SidebarContent = (prop: { username: string, avatar: string, openSettings: () => void }) => (
 
     <VStack py={12} >
         <>
@@ -75,8 +82,12 @@ const SidebarContent = (prop: { username: string, avatar: string }) => (
                 />
             </Flex>
             {
-                Navitems.map((x) => (
+                Navitems.map((x, i) => (
                     <Button key={x.name} w="100%" bg="#3b3170" borderRadius={18} h={"48px"}
+
+                        onClick={i == 2 ? (prop.openSettings)
+                            : () => { }
+                        }
 
                         leftIcon={x.icon}
                         justifyContent="flex-start"
@@ -92,11 +103,22 @@ const SidebarContent = (prop: { username: string, avatar: string }) => (
 
 const Sidebar = ({ isOpen, variant, onClose }: Props) => {
 
-    const { twitterProvider }: any = useContext(GlobalContext);
+    const { twitterProvider, user, logout }: any = useContext(GlobalContext);
+    const [openSettings, setOpenSettings] = useState(false)
 
     const userObject = !twitterProvider ? null : twitterProvider;
     const twitterUsername = !userObject ? "yourHandle" : userObject.displayName;
     const profileAvatar = !userObject ? "https://i.pravatar.cc/150?img=1" : userObject.photoURL;
+
+    function handleClose() {
+        if (openSettings) {
+            setOpenSettings(false)
+        } else {
+            setOpenSettings(true)
+        }
+
+    }
+
     return variant === 'sidebar' ? (
         <Box
             position="fixed"
@@ -127,9 +149,27 @@ const Sidebar = ({ isOpen, variant, onClose }: Props) => {
                 />
 
 
-                <SidebarContent username={twitterUsername} avatar={profileAvatar} />
+                <SidebarContent username={twitterUsername} avatar={profileAvatar} openSettings={() => setOpenSettings(true)} />
 
             </Box>
+
+            <Modal isOpen={openSettings} onClose={handleClose}>
+                <ModalOverlay />
+                <ModalContent bg={"#1d1f37"}>
+                    <ModalHeader>Settings</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <Center>
+                            <Button onClick={user ? logout : null} colorScheme="twitter" mb={2}>
+                                Logout
+                            </Button>
+
+                        </Center>
+
+                    </ModalBody>
+
+                </ModalContent>
+            </Modal>
 
         </Box >
     ) : (
@@ -139,7 +179,7 @@ const Sidebar = ({ isOpen, variant, onClose }: Props) => {
 
                     <DrawerHeader />
                     <DrawerBody py={16}>
-                        <SidebarContent username={twitterUsername} avatar={profileAvatar} />
+                        <SidebarContent username={twitterUsername} avatar={profileAvatar} openSettings={() => setOpenSettings(true)} />
                     </DrawerBody>
                 </DrawerContent>
             </DrawerOverlay>

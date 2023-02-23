@@ -64,11 +64,7 @@ const GlobalProvider = (props: { children: any }) => {
   };
 
 
-  const logout = () => {
-    const ethereum = (window as any).ethereum;
-    if (ethereum) {
-      ethereum.disconnect();
-    }
+  const logout = async () => {
     return auth
       .signOut()
       .then(() => {
@@ -125,7 +121,7 @@ const GlobalProvider = (props: { children: any }) => {
     function handleAccountsChanged(accounts: string | any[]) {
       let currentAccount;
 
-      async function switchNetwork(prov: any) {
+      async function switchNetwork() {
         // Switch to the specified network
         try {
           await ethereum.request({
@@ -156,7 +152,7 @@ const GlobalProvider = (props: { children: any }) => {
           console.log(network)
           setChain(network.chainId);
           if (network.chainId !== 5001n) {
-            switchNetwork(prov);
+            switchNetwork();
           }
           if (account) {
             const bal = await prov.getBalance(account);

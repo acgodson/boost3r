@@ -22,6 +22,7 @@ import BSTARTIFACT from "src/utils/L2BSTToken.json"
 // import POAP from "src/utils/PoapNFT.json"
 import CAMPAIGN from "src/utils/Campaign.json"
 import { BsCheckCircle } from 'react-icons/bs';
+import { BST_ADDRESS, CAMPAIGN_ADDRESS } from 'config';
 
 // PINATA information
 const PINATA_API_KEY = 'fd8ae52c28c49866c91d';
@@ -60,13 +61,15 @@ const CreateCampaignModal = (props: { isOpen: boolean, onClose: () => void; }) =
             const ethereum = (window as any).ethereum;
             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
             const signer = _provider.getSigner();
-            const BSTContract: any = new ethers.Contract("0x6280b9b5Aac7851eF857884b50b86129809aF7Ab", BSTARTIFACT.abi, await signer);
-            const CampaignContract: any = new ethers.Contract("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", CAMPAIGN.abi, await signer);
+            const BSTContract: any = new ethers.Contract(BST_ADDRESS, BSTARTIFACT.abi, await signer);
+            const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
             const deposit = ethers.parseUnits(depositAmount.toString(), 18);
             const reward = ethers.parseUnits(rewardAmount.toString(), 18);
 
             //Allow contract to transfer BST onbehalf of user from address to itself
-            const appTx = await BSTContract.approve("0x9C78Bd5F681C79e97696e9Ebec8959D5eC87ec22", deposit);
+            const appTx = await BSTContract.approve(CAMPAIGN_ADDRESS, deposit);
+
+            appTx.wait()
             // Get the transaction hash
             const txHash = appTx.hash;
             console.log('Approval Transaction sent:', txHash);

@@ -24,4 +24,4 @@ main().catch((error) => {
   process.exitCode = 1;
 });
 
-// Boost3rToken contract deployed to 0xADcA893D3D74830b7f30d5D29bA59530Db98a585 on mantle testnet
+// POAP contract deployed to 0x1d3148b3701AFD68bF1556823D873e733E27E379 on mantle testnet

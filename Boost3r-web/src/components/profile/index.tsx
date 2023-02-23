@@ -1,20 +1,21 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Avatar, Box, Button, Flex, IconButton, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import { GlobalContext } from "contexts/global";
 import { useContext } from "react";
 
-const Imag = (
-    <svg width="200" height="200" viewBox="0 0 200 200" id="badge">
-        <circle cx="100" cy="100" r="70" fill="#FFC107" stroke="#FDD835" stroke-width="10" />
-        <path id="curve" d="M 60 140 Q 100 170 140 140" stroke="none" fill="#FDD835" />
-        <text font-size="28" font-weight="bold" fill="#fff">
-            <textPath xlinkHref="#curve">
-                Mantle
-            </textPath>
-        </text>
-        <text x="50%" y="47%" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">PARTICPANT</text>
-    </svg>
-);
+// const Imag = (
+//     <svg width="200" height="200" viewBox="0 0 200 200" id="badge">
+//         <circle cx="100" cy="100" r="70" fill="#FFC107" stroke="#FDD835" stroke-width="10" />
+//         <path id="curve" d="M 60 140 Q 100 170 140 140" stroke="none" fill="#FDD835" />
+//         <text font-size="28" font-weight="bold" fill="#fff">
+//             <textPath xlinkHref="#curve">
+//                 Mantle
+//             </textPath>
+//         </text>
+
+//         <text x="50%" y="47%" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">PARTICPANT</text>
+//     </svg>
+// );
 
 
 function ProfileCard() {
