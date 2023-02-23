@@ -2,7 +2,13 @@ import { initializeApp } from "firebase/app";
 import "firebase/auth";
 
 const firebaseConfig = {
-
+  apiKey: "AIzaSyDUoesoaqNq4ZSVpnbn9x9lPx0Pjmzjydo",
+  authDomain: "boost3r.firebaseapp.com",
+  projectId: "boost3r",
+  storageBucket: "boost3r.appspot.com",
+  messagingSenderId: "451706698017",
+  appId: "1:451706698017:web:3c651bc6ff9ad03654e660",
+  measurementId: "G-9V0QT5BH28",
 };
 
 export function initFirebase() {

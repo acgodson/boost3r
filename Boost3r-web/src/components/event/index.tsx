@@ -60,7 +60,7 @@ const EventCard = (props: { id: any, refId: number }) => {
             const signer = _provider.getSigner();
 
             const CampaignContract: any = new ethers.Contract(CAMPAIGN_ADDRESS, CAMPAIGN.abi, await signer);
-            const pushTx = await CampaignContract.checkIn(parseInt(props.id), ethers.ZeroAddress);
+            const pushTx = await CampaignContract.checkIn(parseInt(props.id), props.refId);
             const txxHash = pushTx.hash;
             console.log('Create campaign Transaction sent:', txxHash);
             setSuccess(true)
