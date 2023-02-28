@@ -15,6 +15,9 @@ import {
     Text,
     Box,
     VStack,
+    useToast,
+    Center,
+    Spinner,
 } from '@chakra-ui/react';
 import pinataSDK from '@pinata/sdk';
 import { ethers } from 'ethers';
@@ -23,6 +26,7 @@ import BSTARTIFACT from "src/utils/L2BSTToken.json"
 import CAMPAIGN from "src/utils/Campaign.json"
 import { BsCheckCircle } from 'react-icons/bs';
 import { BST_ADDRESS, CAMPAIGN_ADDRESS } from 'config';
+import { useRouter } from 'next/router';
 
 // PINATA information
 const PINATA_API_KEY = 'fd8ae52c28c49866c91d';
@@ -32,16 +36,19 @@ const PINATA_API_SECRET =
 const pinata = new pinataSDK(PINATA_API_KEY, PINATA_API_SECRET);
 
 const CreateCampaignModal = (props: { isOpen: boolean, onClose: () => void; }) => {
+    // const { setCamps }: any = useContext(GlobalContext);
     const [name, setName] = useState('');
     const [success, setSuccess] = useState<boolean>(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [description, setDescription] = useState('');
     const [rewardAmount, setRewardAmount] = useState(0.00001);
-    const [depositAmount, setDepositAmount] = useState(0.0005);
+    const [depositAmount, setDepositAmount] = useState(0.00005);
+    const toast = useToast();
+    const router = useRouter()
 
     const handleSubmit = async () => {
 
-        setSubmitting(true)
+        setSubmitting(true);
         try {
 
             const metadataObject = {
@@ -82,9 +89,26 @@ const CreateCampaignModal = (props: { isOpen: boolean, onClose: () => void; }) =
             const txxHash = pushTx.hash;
             console.log('Create campaign Transaction sent:', txxHash);
             setSuccess(true)
+            //setCamps(null)
+            router.reload()
             //   props.onClose();
 
-        } catch (e) {
+        } catch (e: any) {
+
+            const ethereum = (window as any).ethereum;
+            ethereum.on("error", (err: any) => {
+
+
+                toast({
+                    title: "Error",
+                    description: err.message,
+                    status: "error",
+                    duration: 9000,
+                    isClosable: true,
+                });
+
+            });
+
             setSubmitting(false)
             console.log(e)
         }
@@ -92,6 +116,9 @@ const CreateCampaignModal = (props: { isOpen: boolean, onClose: () => void; }) =
 
 
     useEffect(() => {
+
+
+
         if (!props.isOpen) {
             if (!submitting) {
                 setSuccess(false);
@@ -171,6 +198,20 @@ const CreateCampaignModal = (props: { isOpen: boolean, onClose: () => void; }) =
 
                         </>
                     )}
+
+
+                    {submitting && !success && (
+                        <>
+                            <Center>
+                                <VStack w='100%' h='240'>
+                                    <Spinner />
+                                    <Text py={3}>Brave new world</Text>
+                                </VStack>
+                            </Center>
+                        </>
+                    )}
+
+
 
                     {success && (
                         <>

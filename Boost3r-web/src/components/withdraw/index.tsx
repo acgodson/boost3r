@@ -23,15 +23,24 @@ import { ethers } from "ethers"
 import BSTARTIFACT from "src/utils/L2BSTToken.json"
 import Lottie from "lottie-react";
 import confetti from "src/utils/congrats.json"
+// import confetti from "src/utils/congrats.json"
+// import mantleSDK, { SignerOrProviderLike } from "@mantleio/sdk";
+// import Decimal from 'decimal.js';
+
+
 
 
 function WithdrawTokenModal(props: { isOpen: boolean, onClose: () => void }) {
-    const { bst, }: any = useContext(GlobalContext);
+    const { bst }: any = useContext(GlobalContext);
     const [amount, setAmount] = useState("");
     const [network, setNetwork] = useState("");
     const [success, setSuccess] = useState<boolean>(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
+    // const [testnet, setTestnet] = useState("mantel testnet")
     const { onClose } = useDisclosure();
+    // const [crossChainMessenger, setCrossChainMessenger] = useState<
+    //     CrossChainMessenger
+    // >();
 
     const handleAmountChange = (event: any) => {
         setAmount(event.target.value);
@@ -42,9 +51,92 @@ function WithdrawTokenModal(props: { isOpen: boolean, onClose: () => void }) {
     };
 
 
+
+
+
+    // async function withdrawL1() {
+
+    //     const ethereum = (window as any).ethereum;
+    //     //   const _l1provider = new ethers.JsonRpcProvider("https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161");
+    //     //  const _l2provider = new ethers.JsonRpcProvider("https://rpc.testnet.mantle.xyz");
+    //     const _l1provider = new ethers.BrowserProvider(ethereum, { name: "Goerli test network", chainId: 5 });
+    //     const _l2provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
+    //     const l1Signer = await _l1provider.getSigner();
+    //     async function switchNetwork() {
+    //         // Switch to the specified network
+    //         try {
+    //             await ethereum.request({
+    //                 method: 'wallet_switchEthereumChain',
+    //                 params: [{
+    //                     chainId: "0x5",
+    //                     // rpcUrls: ["https://rpc.testnet.mantle.xyz"],
+    //                 }],
+    //                 nativeCurrency: {
+    //                     name: "Goerli test network",
+    //                     symbol: "GoerliETH",
+    //                     decimals: 18
+    //                 },
+    //                 blockExplorerUrls: ["https://goerli.etherscan.io"]
+    //             });
+
+
+    //         } catch (error) {
+    //             console.error(error);
+    //             // If the user doesn't switch networks, you can show an error message here
+    //             return;
+    //         }
+    //     }
+    //     await switchNetwork();
+
+    //     const l2Signer = await _l2provider.getSigner();
+
+    //     console.log(l1Signer)
+
+
+
+    //     const l1wallet: any = l1Signer.provider;
+    //     const l2wallet: any = l2Signer.provider
+
+    //     console.log("l1signer", l1Signer);
+    //     console.log("l2Signer", l2Signer);
+
+
+    //     const crossChainMessenger = new CrossChainMessenger({
+    //         l1ChainId: 5,
+    //         l2ChainId: 5001,
+    //         l1SignerOrProvider: l1wallet,
+    //         l2SignerOrProvider: l2wallet
+    //     });
+
+
+    //     //const eth = ethers.formatUnits(amount, 18)
+    //     const num: any = new Decimal(amount);
+    //     const eth = BigInt(num.times(1e18).toFixed());
+    //     const multiplied = num.times(1000000);
+    //     console.log(multiplied.toString()); // "0.01"
+
+    //     const response = await crossChainMessenger.l2Signer.depositETH(eth)
+    //     console.log(`Transaction hash (on L1): ${response.hash}`)
+    //     await response.wait()
+    //     console.log("Waiting for status to change to RELAYED");
+    //     await crossChainMessenger.waitForMessageStatus(response, mantleSDK.MessageStatus.RELAYED)
+
+
+
+
+    // }
+
+    // //    setSubmitting(true)
+    // withdrawL1();
+
+
+
+
+
+
     const handleSubmit = async () => {
 
-        setSubmitting(true)
+
         try {
 
             const ethereum = (window as any).ethereum;
@@ -59,7 +151,19 @@ function WithdrawTokenModal(props: { isOpen: boolean, onClose: () => void }) {
             console.log('Approval Transaction sent:', txHash);
             const pushTx = await BSTContract.withdraw(depositAmount);
             const txxHash = pushTx.hash;
-            console.log('Create campaign Transaction sent:', txxHash);
+            console.log('Withdrawal Transaction sent at:', txxHash);
+
+            // if (network !== "Mantle Testnet") {
+            //     setTimeout(() => {
+            //         //It's time to  withdraw via the mantle crossbridge
+
+            //         //This would allow the tokens to be withdrawn to layer 1
+            //         withdrawL1();
+            //     }, 3000)
+            // }
+
+
+
             setSuccess(true)
             props.onClose();
 
@@ -130,19 +234,18 @@ function WithdrawTokenModal(props: { isOpen: boolean, onClose: () => void }) {
                                 <Input type="text" value={amount} onChange={handleAmountChange} />
                             </FormControl>
                             <FormControl mt={4}>
-                                <FormLabel>Withdraw WETH To</FormLabel>
+                                <FormLabel>Recieve WETH to</FormLabel>
                                 <Select value={network} onChange={handleNetworkChange}>
                                     <option value="Mantle Testnet">
                                         {/* <Avatar size="xs" mr={2} icon={<FaEthereum />} /> */}
                                         Mantle Testnet
                                     </option>
-                                    <option value="Goerli Test">
+                                    <option value="Goerli Test" disabled>
                                         {/* <Avatar size="xs" mr={2} icon={<FaEthereum />} /> */}
                                         Goerli Test
                                     </option>
                                 </Select>
                             </FormControl>
-
                         </>
                     )}
 

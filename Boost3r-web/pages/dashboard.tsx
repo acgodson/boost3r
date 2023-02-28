@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react';
 // import { usePrivy } from '@privy-io/react-auth';
 import PageLayout from 'src/components/page-layout';
 import Sidebar from 'src/components/sidebar';
-import { Box, Button, Center, Flex, Grid, HStack, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useBreakpointValue, useToast, VStack } from '@chakra-ui/react';
+import { Box, Button, Center, Flex, Grid,  Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Stack, Text, useBreakpointValue, useToast, VStack } from '@chakra-ui/react';
 import Header from 'src/components/header';
 import Slider from 'src/components/slider';
 import { FiPlay } from 'react-icons/fi';
@@ -225,18 +225,19 @@ export default function DashboardPage() {
             gap={4}
             w="100%"
             mx="auto"
-            px={5}
+            px={[0, 0, 5]}
             gridColumnGap={"5%"}
           >
 
             <VStack w="100%" pt={12}>
 
               {/* Onboarding Banner */}
-              <VStack minW="600px"
+              <VStack
+                minW={["100%", "100%", "600px"]}
                 bg="#1d1f37"
                 borderRadius={24}
                 color={"white"}
-                h="300px"
+                h={[null, null, "300px"]}
                 backgroundSize="cover"
                 backgroundPosition="center"
                 p={8}
@@ -290,7 +291,7 @@ export default function DashboardPage() {
 
 
 
-                    <HStack py={5}>
+                    <Stack direction={["column", "row", "row"]} py={5}>
 
                       {
                         !userObject && (
@@ -324,14 +325,16 @@ export default function DashboardPage() {
                         {!userObject ? "GET STARTED" : userObject && !connected ? "CONNECT WALLET" : "CREATE CAMPAIGN"}
                       </Button>
 
-                    </HStack>
+                    </Stack>
 
 
 
                   </Box>
 
                   <VStack w="30%">
-                    <Box position={"absolute"} w="600px" h="250px" left={"260px"}
+                    <Box position={"absolute"} w={["100%", "100%", "600px"]} 
+                    h={["410px", "300px","250px"]}
+                      left={[0, 0, "260px"]}
                       marginTop="20px"
                       sx={{
                         backgroundImage: "url('/images/grad.svg')",
@@ -351,7 +354,8 @@ export default function DashboardPage() {
                   <Box position={"absolute"} as="img"
                     h="200px"
                     top={"200px"}
-                    marginLeft="130px"
+                    opacity={[0.4, 0.4, 1]}
+                    marginLeft={[0, 0, "130px"]}
                     float="right"
                     src='/images/rocket.png'
                   />
@@ -364,10 +368,10 @@ export default function DashboardPage() {
               <Slider />
             </VStack>
 
-            <VStack w="30%" px={5} position="fixed"
+            <VStack w={["100%", "100%", "30%"]} px={5} position={["relative", "relative", "fixed"]}
               marginTop={"30px"}
 
-              right={"20px"}
+              right={[0, 0, "20px"]}
             >
 
               <Box

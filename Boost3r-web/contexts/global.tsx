@@ -154,14 +154,14 @@ const GlobalProvider = (props: { children: any }) => {
           if (network.chainId !== 5001n) {
             switchNetwork();
           }
-          if (account) {
-            const bal = await prov.getBalance(account);
-            if (bal) {
-              const x = ethers.formatUnits(bal);
-              const result = x.slice(0, 6);
-              setBalance(result)
-            }
-          }
+          // if (account) {
+          //   const bal = await prov.getBalance(account);
+          //   if (bal) {
+          //     const x = ethers.formatUnits(bal);
+          //     const result = x.slice(0, 6);
+          //     setBalance(result)
+          //   }
+          // }
 
         }
       }
