@@ -18,28 +18,20 @@ import {
     VStack,
     useDisclosure,
     Spinner,
+    useToast,
 
 
 } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import CAMPAIGN from "src/utils/Campaign.json"
+import CAMPAIGN from "src/utils/Campaign.json";
 import { ethers } from "ethers";
 
 import { GlobalContext } from "contexts/global";
 import { FaChartLine, FaPeopleArrows, FaStar, FaTwitter } from "react-icons/fa";
 import Lottie from "lottie-react";
-import confetti from "src/utils/congrats.json"
+import confetti from "src/utils/congrats.json";
 import { CAMPAIGN_ADDRESS } from "config";
-
-
-
-// declare global {
-//     interface Window {
-//         ethereum: any;
-//     }
-// }
-
-
+import { useRouter } from "next/router";
 
 
 
@@ -54,14 +46,14 @@ const campaigns: any = [
     },
     {
 
-        image: "https://picsum.photos/600/400",
+        image: "https://picsum.photos/600/400?grayscale",
     },
 
 ];
 
 const Slider = () => {
     const [currentCard, setCurrentCard] = useState(1);
-    const { camps, setCamps, account }: any = useContext(GlobalContext);
+    const { camps, setCamps, account, bpoap }: any = useContext(GlobalContext);
     const bgColor = "transparent";
     const sliderRef = useRef<any>(null);
     const [onView, setOnView] = useState(false);
@@ -69,6 +61,11 @@ const Slider = () => {
     const { onClose } = useDisclosure();
     const [success, setSuccess] = useState<boolean>(false)
     const [submitting, setSubmitting] = useState<boolean>(false)
+    const router = useRouter();
+    const [selected, setSelected] = useState<any | null>(null);
+    const [copied, setCopied] = useState(false);
+    const toast = useToast();
+
 
 
 
@@ -85,52 +82,26 @@ const Slider = () => {
             const pushTx = await CampaignContract.checkIn(index, 0);
             const txxHash = pushTx.hash;
             console.log('Create campaign Transaction sent:', txxHash);
-            setSuccess(true)
+            setSuccess(true);
             //   props.onClose();
+            setTimeout(() => {
+                router.reload()
+            }, 3000)
 
         } catch (e) {
+            toast({
+                title: "Error",
+                description: "You may have already checked in, please wait for confirmation ,or check console log",
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
+
+
             setSubmitting(false)
             console.log(e)
         }
     };
-
-
-
-    // useEffect(() => {
-
-    //     if (camps) {
-    //         if (campaigns.length > 0) {
-    //             for (let i = 0; i < camps.length; i++) {
-    //                 let addressArray = [camps[index]["checkedInAddresses"]];
-    //                 let address = addressArray[i];
-    //                 if (address) {
-    //                     if (address.includes(ethers.getAddress(account))) {
-    //                         async function fetchNFT() {
-    //                             const NFTtokenID = i + 1;
-    //                             const ethereum = (window as any).ethereum;
-    //                             const _provider = new ethers.BrowserProvider(ethereum, { name: "unknown", chainId: 5001 });
-    //                             const signer = _provider.getSigner();
-    //                             const POAPContract: any = new ethers.Contract("0x8FaeCCc73e720EDaF5DA087Eb075484f0e1101a6", POAP.abi, await signer)
-
-    //                             // // Call the ERC721 contract's tokenURI() function to get the metadata URI for the token
-    //                             // const tokenURI = await POAPContract.tokenURI(NFTtokenID);
-    //                             // // Use the metadata URI to retrieve the metadata for the token
-    //                             // const metadataResponse = await fetch(tokenURI);
-    //                             // console.log(metadataResponse.text());
-    //                         }
-
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-    //     }
-
-    // });
-
-
-
-
 
 
     useEffect(() => {
@@ -187,6 +158,46 @@ const Slider = () => {
     })
 
 
+    useEffect(() => {
+        if (copied) {
+            toast({
+                title: "Referral link Copied to clipboard",
+                status: "success",
+                duration: 9000,
+                isClosable: true,
+            });
+        }
+        setCopied(false)
+    }, [copied])
+
+
+
+
+    useEffect(() => {
+        if (!selected) {
+            if (bpoap && bpoap[0].title) {
+                console.log(bpoap)
+                //getUserNFT()
+                async function getUserNFT() {
+                    //let us fetch a users token from this function
+                    const _selected = bpoap.filter((x: any) => x.title === camps[index].title);
+                    console.log('selected NFT', _selected);
+                    setSelected(_selected[0]);
+                }
+
+                getUserNFT()
+
+            }
+
+        }
+
+    }, [index, selected, bpoap]);
+
+
+
+
+
+
     const handleNextClick = () => {
         if (camps && camps.length > 0) {
             if (currentCard < camps.length) {
@@ -213,7 +224,7 @@ const Slider = () => {
 
     return (
         <>
-            <Box bg={bgColor} py={4}>
+            <Box bg={bgColor} py={4} color="white">
                 <Flex justify="center">
 
                     <Box maxW="600px" mx={4}>
@@ -231,12 +242,12 @@ const Slider = () => {
                             }}
                             ref={sliderRef}
                         >
-                            <Flex>
+                            <Flex >
                                 {camps && camps.map((x: any, i: any) => (
-                                    <Box key={i} >
+                                    <Box key={i} w="100%" >
                                         <Box
 
-                                            minW="600px"
+                                            minW={["600px", "600px", "600px"]}
                                             bg="#1d1f37"
                                             color={"white"}
                                             h="300px"
@@ -275,12 +286,19 @@ const Slider = () => {
                                                     </Center>
 
                                                     <Center py={4}>
-                                                        <Button onClick={() => {
-                                                            SetIndex(i)
-                                                            setOnView(true);
-                                                        }
+                                                        <Button
 
-                                                        }>Check In</Button>
+                                                            bg="gray.700"
+                                                            _hover={{
+                                                                backgroundColor: "gray.700"
+                                                            }}
+                                                            onClick={() => {
+                                                                setSelected(null)
+                                                                SetIndex(i)
+                                                                setOnView(true);
+                                                            }
+
+                                                            }>Check In</Button>
                                                     </Center>
                                                 </Box>
 
@@ -292,6 +310,13 @@ const Slider = () => {
 
 
                                 ))}
+
+                                {!camps && account && (
+                                    <Center position={"absolute"}>
+                                        <Spinner />
+                                    </Center>
+
+                                )}
                             </Flex>
                         </Box>
                     </Box>
@@ -342,7 +367,7 @@ const Slider = () => {
                         w={{ base: '100%', lg: '78%' }}
                         left={0}
                         bg={"blackAlpha.800"}
-
+                        color="white"
                         top={0}
                         h="100vh"
                     >
@@ -402,11 +427,18 @@ const Slider = () => {
                                                         <Flex mt={8}>
                                                             <VStack align="center" flex={1} pr={4} borderRight="1px solid gray">
                                                                 <Text fontSize="2xl" fontWeight="bold">
-                                                                    0 <span style={{
+
+                                                                    {selected ?
+
+                                                                        parseInt(selected.referralCount) * parseInt(ethers.formatUnits(camps[index].rewardAmount, 18))
+                                                                        : "fetching"
+                                                                    }
+
+                                                                    <span style={{
                                                                         fontSize: "xs",
                                                                         color: "pink",
                                                                         fontWeight: "semibold"
-                                                                    }}>BST</span>
+                                                                    }}> BST</span>
                                                                 </Text>
 
                                                                 <Text>
@@ -417,12 +449,18 @@ const Slider = () => {
                                                             <Divider orientation="vertical" />
                                                             <VStack align="center" flex={1} px={4}>
                                                                 <Text fontSize="2xl" fontWeight="bold" textAlign={"center"}>
-                                                                    0<span>      <FaPeopleArrows /></span>
+                                                                    {selected ? selected.referralCount
+                                                                        : "fetching"
+                                                                    }
+
+
+
+                                                                    <span>      <FaPeopleArrows /></span>
                                                                 </Text>
                                                                 <Text>
 
 
-                                                                    Referral</Text>
+                                                                    Total   Referrals</Text>
                                                             </VStack>
                                                             <Divider orientation="vertical" />
                                                             <VStack align="center" flex={1} pl={4} borderLeft="1px solid gray">
@@ -432,16 +470,30 @@ const Slider = () => {
                                                                 <Text>
 
 
-                                                                    <span>   <FaStar /></span>Score
+                                                                    <span>   <FaStar /></span>Booster Score
                                                                 </Text>
                                                             </VStack>
                                                         </Flex>
 
                                                         <HStack py={6} w="100%" alignItems={"center"} justifyContent="center">
                                                             <Button rightIcon={<FaTwitter />}>Tweet</Button>
-                                                            <Button>Copy Link</Button>
+                                                            <Button
+                                                                zIndex={"tooltip"}
+                                                                position={"relative"}
+                                                                onClick={async () => {
+                                                                    const _link = `http://boost3r-event.web.app/event?id=${camps.indexOf(camps[index])}&ref=${selected.id}`
+                                                                    await navigator.clipboard.writeText(_link);
+                                                                    setCopied(true)
+                                                                }}
+                                                                bg={"blue.700"}
+                                                            >Copy Link</Button>
+
 
                                                         </HStack>
+
+                                                        <Text fontSize={"sm"} color="green">This Campaign ID is {camps.indexOf(camps[index])}</Text>
+
+                                                        <Text fontSize={"sm"} color="yellow">Your referral ID is {selected ? selected.id : "fetching"}</Text>
 
                                                     </>
                                                 }
@@ -617,11 +669,12 @@ const Slider = () => {
                                                     cursor={"pointer"}
                                                     onClick={() => {
                                                         SetIndex(i)
+                                                        setSelected(null)
                                                     }}
                                                 >
                                                     <HStack textAlign={"left"} justify={"start"}>
 
-                                                        <VStack textAlign={"left"} w="100%">
+                                                        <VStack textAlign={"left"} w="100%" color="white">
                                                             <Box><Box as="span" color="orange">Title </Box>{x.title}</Box>
                                                             <Box fontSize={"xs"} color="whiteAlpha.600"><Box as="span" color="orange">Reward: </Box>{ethers.formatUnits(x.rewardAmount, 18)}BST {" "}
                                                                 per referral

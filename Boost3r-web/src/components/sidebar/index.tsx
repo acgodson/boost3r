@@ -159,12 +159,30 @@ const Sidebar = ({ isOpen, variant, onClose }: Props) => {
                     <ModalHeader>Settings</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <Center>
-                            <Button onClick={user ? logout : null} colorScheme="twitter" mb={2}>
-                                Logout
-                            </Button>
 
-                        </Center>
+                        {
+                            user &&
+
+                            <Center>
+                                <Button onClick={user ? logout : null} colorScheme="twitter" mb={2}>
+                                    Logout
+                                </Button>
+
+                            </Center>
+                        }
+
+
+                        {!user && (
+                            <Center>
+                                <Button onClick={user ? logout : null} colorScheme="twitter" mb={2}>
+                                    Please click on get started to login
+                                </Button>
+
+                            </Center>
+                        )}
+
+
+
 
                     </ModalBody>
 
@@ -175,7 +193,7 @@ const Sidebar = ({ isOpen, variant, onClose }: Props) => {
     ) : (
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
             <DrawerOverlay>
-                <DrawerContent>
+                <DrawerContent bg={"#141627"}>
 
                     <DrawerHeader />
                     <DrawerBody py={16}>

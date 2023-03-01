@@ -12,7 +12,6 @@ import {
     Heading,
     HStack,
     IconButton,
-    Divider,
     Text,
     VStack,
     useDisclosure,
@@ -23,7 +22,7 @@ import CAMPAIGN from "src/utils/Campaign.json"
 import { ethers } from "ethers";
 
 import { GlobalContext } from "contexts/global";
-import { FaChartLine, FaPeopleArrows, FaStar, FaTwitter } from "react-icons/fa";
+//import { FaChartLine, FaPeopleArrows, FaStar, FaTwitter } from "react-icons/fa";
 import Lottie from "lottie-react";
 import confetti from "src/utils/congrats.json"
 import { CAMPAIGN_ADDRESS } from "config";
@@ -284,7 +283,8 @@ const EventCard = (props: { id: any, refId: number }) => {
                                                 {event.checkedInAddresses && event.checkedInAddresses.includes(ethers.getAddress(account)) &&
 
                                                     <>
-                                                        <Flex mt={8}>
+                                                        <Text>Congrats, You're checked inf already! visit booster.wep.app to get a referral id and earn tokens for referring people </Text>
+                                                        {/* <Flex mt={8}>
                                                             <VStack align="center" flex={1} pr={4} borderRight="1px solid gray">
                                                                 <Text fontSize="2xl" fontWeight="bold">
                                                                     0 <span style={{
@@ -326,7 +326,7 @@ const EventCard = (props: { id: any, refId: number }) => {
                                                             <Button rightIcon={<FaTwitter />}>Tweet</Button>
                                                             <Button>Copy Link</Button>
 
-                                                        </HStack>
+                                                        </HStack> */}
 
                                                     </>
                                                 }
