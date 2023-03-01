@@ -24,16 +24,6 @@ npm install
 npm run dev
 ```
 
-The development server will start at http://localhost:3000 and you can start using Chaincraft Web.
-
-## Greenhouse Hacathon
-
-Chaincraft Web is open source and was released as a submission for the Greenhouse hackathon 2023.
-
-## Contributing
-
-If you're interested in contributing to Chaincraft Web, feel free to fork the repository and submit a pull request. Your contribution is greatly appreciated!
-
 ## Links
 
 - [Website](https://boost3r.web.app)
